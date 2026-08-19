@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -105,6 +106,12 @@ class DatabaseSeeder extends Seeder
             'precio' => 12.00,
             'stock' => 70,
             'activo' => true,
+        ]);
+
+        User::create([
+            'name' => 'Administrador',
+            'email' => 'admin@demo.com',
+            'password' => 'admin123',
         ]);
     }
 }

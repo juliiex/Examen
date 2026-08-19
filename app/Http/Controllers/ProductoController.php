@@ -94,14 +94,16 @@ class ProductoController extends Controller
     }
 
     /**
-     * Elimina el producto especificado de la base de datos.
+     * Desactiva lógicamente el producto especificado.
      */
     public function destroy(Producto $producto): RedirectResponse
     {
-        $producto->delete();
+        $producto->update([
+            'activo' => false,
+        ]);
 
         return redirect()
             ->route('productos.index')
-            ->with('success', 'Producto eliminado correctamente.');
+            ->with('success', 'Producto desactivado exitosamente.');
     }
 }

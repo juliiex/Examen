@@ -14,6 +14,21 @@
             padding: 20px;
         }
 
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .header-actions {
             display: flex;
             justify-content: space-between;
@@ -59,6 +74,12 @@
             color: white;
         }
 
+        .btn-logout {
+            background: #f4f4f4;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
         .btn-eliminar {
             background: #e3342f;
             color: white;
@@ -69,7 +90,18 @@
 
 <body>
 
-    <h1>Gestor de Productos</h1>
+    <div class="header-top">
+        <h1 style="margin: 0;">Gestor de Productos</h1>
+
+        <div class="user-nav">
+            <span>Bienvenido, <strong>{{ auth()->user()->name ?? 'Usuario' }}</strong></span>
+
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn-logout">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
 
     <div class="header-actions">
         <input
