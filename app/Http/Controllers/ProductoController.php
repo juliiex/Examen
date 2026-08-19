@@ -14,13 +14,13 @@ use Illuminate\View\View;
 class ProductoController extends Controller
 {
     /**
-     * Muestra el listado de productos.
+     * Muestra el listado de productos con paginación.
      */
     public function index(): View
     {
         $productos = Producto::with('categoria')
             ->orderByDesc('id')
-            ->get();
+            ->paginate(10);
 
         return view('productos.index', compact('productos'));
     }

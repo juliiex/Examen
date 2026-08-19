@@ -1,78 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>Editar Producto</title>
+@section('title', 'Editar Producto')
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        textarea {
-            height: 80px;
-            resize: vertical;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px 15px;
-            border: 1px solid #f5c6cb;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .alert-error p {
-            margin: 5px 0;
-        }
-
-        .btn-submit {
-            background: #222;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-volver {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #555;
-            text-decoration: none;
-        }
-    </style>
-</head>
-
-<body>
-
+@section('content')
     <h1>Editar producto</h1>
 
     <a href="{{ route('productos.index') }}" class="btn-volver">
@@ -172,7 +102,9 @@
             Actualizar producto
         </button>
     </form>
+@endsection
 
+@section('scripts')
     <script>
         const formulario = document.getElementById('producto-form');
         const nombre = document.getElementById('nombre');
@@ -214,10 +146,11 @@
                     </div>
                 `;
 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
     </script>
-
-</body>
-</html>
+@endsection

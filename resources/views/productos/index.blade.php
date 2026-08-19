@@ -1,95 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>Gestor de Productos</title>
+@section('title', 'Gestor de Productos')
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .user-nav {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        #busqueda {
-            padding: 8px 12px;
-            font-size: 14px;
-            width: 320px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background: #f5f5f5;
-        }
-
-        a, button {
-            padding: 6px 12px;
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .btn-crear {
-            display: inline-block;
-            background: #222;
-            color: white;
-        }
-
-        .btn-logout {
-            background: #f4f4f4;
-            color: #333;
-            border: 1px solid #ccc;
-        }
-
-        .btn-eliminar {
-            background: #e3342f;
-            color: white;
-            border: none;
-        }
-    </style>
-</head>
-
-<body>
-
+@section('content')
     <div class="header-top">
         <h1 style="margin: 0;">Gestor de Productos</h1>
 
@@ -111,13 +24,18 @@
             autocomplete="off"
         >
 
-        <a href="{{ route('productos.create') }}" class="btn-crear">
-            + Nuevo producto
-        </a>
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ route('categorias.index') }}" class="btn-crear" style="background-color: #4a5568;">
+                Ver Categorías
+            </a>
+
+            <a href="{{ route('productos.create') }}" class="btn-crear">
+                + Nuevo producto
+            </a>
+        </div>
     </div>
 
     <table>
-
         <thead>
             <tr>
                 <th>ID</th>
@@ -131,9 +49,7 @@
         </thead>
 
         <tbody id="tabla-productos">
-
             @forelse ($productos as $producto)
-
                 <tr>
                     <td>{{ $producto->id }}</td>
                     <td>{{ $producto->nombre }}</td>
@@ -162,26 +78,36 @@
                         </form>
                     </td>
                 </tr>
-
             @empty
-
                 <tr>
                     <td colspan="7">No hay productos registrados.</td>
                 </tr>
-
             @endforelse
-
         </tbody>
-
     </table>
 
+    <div id="paginacion-container" style="margin-top: 20px;">
+        {{ $productos->links() }}
+    </div>
+@endsection
+
+@section('scripts')
     <script>
         const inputBusqueda = document.getElementById('busqueda');
         const tablaProductos = document.getElementById('tabla-productos');
+        const paginacionContainer = document.getElementById('paginacion-container');
         const csrfToken = '{{ csrf_token() }}';
+        let temporizador;
 
-        inputBusqueda.addEventListener('input', function () {
-            const query = this.value;
+        function buscarProductos(query) {
+            if (query === '') {
+                window.location.reload();
+                return;
+            }
+
+            if (paginacionContainer) {
+                paginacionContainer.style.display = 'none';
+            }
 
             fetch(`{{ route('productos.buscar') }}?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
@@ -222,8 +148,14 @@
                     `).join('');
                 })
                 .catch(error => console.error('Error en la búsqueda:', error));
+        }
+
+        inputBusqueda.addEventListener('input', function () {
+            clearTimeout(temporizador);
+
+            temporizador = setTimeout(() => {
+                buscarProductos(this.value.trim());
+            }, 300);
         });
     </script>
-
-</body>
-</html>
+@endsection

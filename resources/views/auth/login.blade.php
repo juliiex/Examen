@@ -1,96 +1,69 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>Iniciar sesión</title>
+@section('title', 'Iniciar sesión')
 
+@section('styles')
     <style>
         body {
-            font-family: Arial, sans-serif;
             max-width: 500px;
-            margin: 80px auto;
-            padding: 20px;
+            margin: 60px auto;
         }
 
-        h1 {
-            margin-bottom: 25px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        input {
+        .login-demo {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            background: #f9f9f9;
             padding: 10px;
-            font-size: 15px;
-        }
-
-        button {
-            padding: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .error {
-            background: #ffe0e0;
-            padding: 10px;
-            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px dashed #ccc;
         }
     </style>
-</head>
+@endsection
 
-<body>
-
-    <h1>Iniciar sesión</h1>
+@section('content')
+    <h1 style="margin-bottom: 25px;">Iniciar sesión</h1>
 
     @if ($errors->any())
-        <div class="error">
+        <div class="alert-error">
             @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
+                <p>• {{ $error }}</p>
             @endforeach
         </div>
     @endif
 
     <form method="POST" action="/login">
-
         @csrf
 
-        <label for="email">
-            Email
-        </label>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ old('email') }}"
+                required
+                autofocus
+            >
+        </div>
 
-        <input
-            type="email"
-            id="email"
-            name="email"
-            value="{{ old('email') }}"
-            required
-        >
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+        </div>
 
-        <label for="password">
-            Contraseña
-        </label>
-
-        <input
-            type="password"
-            id="password"
-            name="password"
-            required
-        >
-
-        <button type="submit">
+        <button type="submit" class="btn-submit" style="width: 100%; margin-top: 10px;">
             Iniciar sesión
         </button>
-
     </form>
 
-    <p>
-        Demo: admin@demo.com / admin123
-    </p>
-
-</body>
-</html>
+    <div class="login-demo">
+        <strong>Credenciales demo:</strong><br>
+        <code>admin@demo.com</code> / <code>admin123</code>
+    </div>
+@endsection
